@@ -9,34 +9,49 @@ namespace SignalRClient
 {
     class Program
     {
+        public static string _SignalRUrl= @"http://localhost:7424/";
+        static IHubProxy _stockTickerHubProxy=null;
         static void Main(string[] args)
         {
-            var hubConnection = new HubConnection("http://localhost:7424/signalr");
-            IHubProxy stockTickerHubProxy = hubConnection.CreateHubProxy("SignalRWeather");
+            Console.Write("Please enter username: ");
+            string UserName = Console.ReadLine();
+
+            //Register hubproxy for a server side hub
+            //pass URL, QueryString parameters and Default URL boolean (/signalr is the default url root value)
+            var hubConnection = new HubConnection(_SignalRUrl, string.Format("UserName={0}", UserName), true);
+            
+            //Configure the HubName
+            _stockTickerHubProxy = hubConnection.CreateHubProxy("SignalRDataApp");
+
+            //Bind statechange event with hub connection
             hubConnection.StateChanged += hubConnection_StateChanged;
-            stockTickerHubProxy.On<List<Student>>("sendMessage", SendMessage);
+
+            //Invoke the SignalR server side method
+            _stockTickerHubProxy.On<List<Student>>("sendMessage", SendMessage);
+
+            //start the hubconnection
             hubConnection.Start();
             Console.Read();
-            //ServicePointManager.DefaultConnectionLimit = 10;
         }
 
         private static void hubConnection_StateChanged(StateChange obj)
         {
             if (obj.NewState == ConnectionState.Connected)
             {
+                Console.WriteLine("Connected..");
 
             }
             else if (obj.NewState == ConnectionState.Connecting)
             {
-
+                Console.WriteLine("Connecting..");
             }
             else if (obj.NewState == ConnectionState.Disconnected)
             {
-
+                Console.WriteLine("Disconnected");
             }
             else
             {
-
+                Console.WriteLine("Reconnecting");
             }
         }
 
@@ -44,7 +59,7 @@ namespace SignalRClient
         {
             foreach (var i in obj)
             {
-                Console.WriteLine("Name: {0}, Id: {1}", i.Name, i.Id);
+                Console.WriteLine("Id: {0}, Name: {1}", i.Id, i.Name);
             }
             Console.WriteLine("===================================================================");
         }
