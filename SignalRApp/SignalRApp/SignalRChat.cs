@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Text;
 using SignalRApp.Logs;
+using System.Data.OleDb;
+using System.Data;
 
 namespace SignalRApp
 {
@@ -20,7 +22,7 @@ namespace SignalRApp
         {
             Timer aTimer = new Timer();
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            aTimer.Interval = 1000;
+            aTimer.Interval = 5000;
             aTimer.Enabled = true;
             _firstInit = false;
             aTimer.Start();
@@ -86,36 +88,49 @@ namespace SignalRApp
         #region Bind Data
         public List<Student> FetchData()
         {
-            int randNum = RandomNumber(1, 100);
-            string randStr = RandomString(10, true);
-            List<Student> studentList = new List<Student>() {
-                new Student(){ Id=randNum+1, Name= randStr+"_A"},
-                new Student(){ Id=randNum+2, Name=randStr+"_B"},
-                new Student(){ Id=randNum+3, Name=randStr+"_C"},
-                new Student(){ Id=randNum+4, Name=randStr+"_D"}
-            };
-            return studentList;
-        }
-
-        public int RandomNumber(int min, int max)
-        {
-            Random random = new Random();
-            return random.Next(min, max);
-        }
-
-        public string RandomString(int size, bool lowerCase)
-        {
-            StringBuilder builder = new StringBuilder();
-            Random random = new Random();
-            char ch;
-            for (int i = 0; i < size; i++)
+            OleDbConnection conn = null;
+            List<Student> listStudent = new List<Student>();
+            string FilePath = @"C:\Users\n.maraiya\Documents\visual studio 2015\Projects\Excel\ExcelData.xlsx";
+            string ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + FilePath + ";Extended Properties=\"Excel 12.0;ReadOnly=False;HDR=Yes;\"";
+            string Command = "SELECT TOP 4 ID, Name FROM [Sheet1$] ORDER BY ID Desc";
+            try
             {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                builder.Append(ch);
+                using (conn = new OleDbConnection(ConnectionString))
+                {
+                    using (OleDbCommand cmd = new OleDbCommand(Command, conn))
+                    {
+                        conn.Open();
+                        using (OleDbDataAdapter da = new OleDbDataAdapter(cmd))
+                        {
+                            DataSet id = new DataSet();
+                            da.Fill(id);
+
+                            DataTable idtable = id.Tables[0];
+
+                            listStudent = (from s in idtable.AsEnumerable()
+                                           select new Student
+                                           {
+                                               Id = Convert.ToInt32(s["ID"].ToString()),
+                                               Name = s["Name"].ToString()
+                                           }).ToList();
+
+                            return listStudent;
+                        }
+                    }
+                }
             }
-            if (lowerCase)
-                return builder.ToString().ToLower();
-            return builder.ToString();
+            catch (Exception ex)
+            {
+                WriteLogFile.WriteLog(ex.Message);
+            }
+            finally
+            {
+                if (conn != null || conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return listStudent;
         }
         #endregion Bind Data
     }
