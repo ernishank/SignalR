@@ -1,34 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace ExcelOperations
 {
     class Program
     {
+        //Excel sheet file path
+        static string _FilePath = @"D:\Auth\SignalR\SignalR\Excel\ExcelData.xlsx";
+        //ConnectionString for OleDB connection purpose
+        static string _ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + _FilePath + ";Extended Properties=\"Excel 12.0;ReadOnly=False;HDR=Yes;\"";
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         Program()
         {
+            //Initializing timer 
             Timer aTimer = new Timer();
+            //Binding timer event on elapse
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            //timer interval
+            //will tick in every second
             aTimer.Interval = 1000;
-            aTimer.Enabled = true;
+            //starting timer
             aTimer.Start();
         }
 
 
-        static string _FilePath = @"C:\Users\n.maraiya\Documents\visual studio 2015\Projects\Excel\ExcelData.xlsx";
-        static string _ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + _FilePath + ";Extended Properties=\"Excel 12.0;ReadOnly=False;HDR=Yes;\"";
+     
         static void Main(string[] args)
         {
-            Program p = new Program();
+            //Creating object to execute/call default constructor
+            Program objProgram = new Program();
             Console.Read();
         }
 
+        //In every one second we will insert the data
+        //in Excel Sheet
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             InsertData();
@@ -38,12 +47,8 @@ namespace ExcelOperations
         {
             try
             {
-                //getting the path of the file     
-
-                //connection string for that file which extantion is .xlsx    
                 //making query    
-
-                string query = "INSERT INTO [Sheet1$] ([Id], [Name]) VALUES(" + Id() + ",'" + RandomString(10, true) + "')";
+                string query = "INSERT INTO [Sheet1$] ([Id], [CompanyName], [Price]) VALUES(" + Id() + ",'" + CompanyName() + "'," + Price() + ")";
                 //Providing connection    
                 using (OleDbConnection conn = new OleDbConnection(_ConnectionString))
                 {
@@ -72,14 +77,14 @@ namespace ExcelOperations
             catch (Exception ex)
             {
                 Console.WriteLine("====================================================");
-                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
                 Console.WriteLine("====================================================");
             }
         }
 
+        //Generating Id based on the maximum Id in ExcelSheet
         public static int Id()
         {
-
             string Command = "SELECT max(ID) FROM [Sheet1$]";
             int Id = 0;
             try
@@ -92,12 +97,6 @@ namespace ExcelOperations
                         using (OleDbDataAdapter da = new OleDbDataAdapter(cmd))
                         {
                             Id = Convert.ToInt32(cmd.ExecuteScalar() == DBNull.Value ? 0 : cmd.ExecuteScalar());
-                            //DataSet id = new DataSet();
-                            //da.Fill(id);
-
-                            //DataTable idtable = id.Tables[0];
-                            //idtable.DefaultView.Sort = idtable.Columns[0].ColumnName + " " + "DESC";
-                            //idtable = idtable.DefaultView.ToTable();
                             conn.Close();
                         }
                     }
@@ -106,25 +105,45 @@ namespace ExcelOperations
             catch (Exception ex)
             {
                 Console.WriteLine("====================================================");
-                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
                 Console.WriteLine("====================================================");
             }
             return Id + 1;
         }
 
-        public static string RandomString(int size, bool lowerCase)
+        //Initialing an array of Company
+        //Based on this array, will return random Company Name
+        //to insert in Excel Sheet
+        public static string CompanyName()
         {
-            StringBuilder builder = new StringBuilder();
-            Random random = new Random();
-            char ch;
-            for (int i = 0; i < size; i++)
+            // A array of Company Name  
+            string[] companyName = { "Apple", "Microsoft", "Alphabet", "GE", "Reliance", "Facebook", "Twitter", "Goldman Sachs", "Netflix", "Amazon", "Nescafe", "Tata", "TCS", "Infosys", "Wipro", "Prowareness" };
+            int index = 0;
+            try
             {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                builder.Append(ch);
+                // Create a Random object  
+                Random rand = new Random();
+                // Generate a random index less than the size of the array.  
+                index = rand.Next(companyName.Length);
             }
-            if (lowerCase)
-                return builder.ToString().ToLower();
-            return builder.ToString();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            // Return company name.  
+            return companyName[index];
+        }
+
+        //Generating random price number
+        private static double Price()
+        {
+            double minValue = 100;
+            double maxValue = 1000;
+            // Create a Random object  
+            Random rand = new Random();
+            var next = rand.NextDouble();
+
+            return Math.Round(minValue + (next * (maxValue - minValue)));
         }
     }
 }

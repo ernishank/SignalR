@@ -9,8 +9,8 @@ namespace SignalRClient
 {
     class Program
     {
-        public static string _SignalRUrl= @"http://localhost:7424/";
-        static IHubProxy _stockTickerHubProxy=null;
+        public static string _SignalRUrl = @"http://localhost:7424/";
+        static IHubProxy _stockTickerHubProxy = null;
         static void Main(string[] args)
         {
             Console.Write("Please enter username: ");
@@ -19,7 +19,7 @@ namespace SignalRClient
             //Register hubproxy for a server side hub
             //pass URL, QueryString parameters and Default URL boolean (/signalr is the default url root value)
             var hubConnection = new HubConnection(_SignalRUrl, string.Format("UserName={0}", UserName), true);
-            
+
             //Configure the HubName
             _stockTickerHubProxy = hubConnection.CreateHubProxy("SignalRDataApp");
 
@@ -27,7 +27,7 @@ namespace SignalRClient
             hubConnection.StateChanged += hubConnection_StateChanged;
 
             //Invoke the SignalR server side method
-            _stockTickerHubProxy.On<List<Student>>("sendMessage", SendMessage);
+            _stockTickerHubProxy.On<List<StockExchange>>("sendMessage", SendMessage);
 
             //start the hubconnection
             hubConnection.Start();
@@ -55,13 +55,16 @@ namespace SignalRClient
             }
         }
 
-        private static void SendMessage(List<Student> obj)
+        private static void SendMessage(List<StockExchange> obj)
         {
-            foreach (var i in obj)
+            if (obj != null && obj.Count > 0)
             {
-                Console.WriteLine("Id: {0}, Name: {1}", i.Id, i.Name);
+                foreach (var i in obj)
+                {
+                    Console.WriteLine("Id: {0}, Company Name: {1}, Price: {2}", i.Id, i.Name, i.Price);
+                }
+                Console.WriteLine("===================================================================");
             }
-            Console.WriteLine("===================================================================");
         }
 
 

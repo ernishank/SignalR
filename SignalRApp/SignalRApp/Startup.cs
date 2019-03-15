@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(SignalRApp.Startup))]
+[assembly: OwinStartup(typeof(SignalRApp.Startup))]
 
 namespace SignalRApp
 {

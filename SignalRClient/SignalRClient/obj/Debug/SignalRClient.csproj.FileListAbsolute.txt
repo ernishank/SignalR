@@ -22,3 +22,15 @@ C:\Users\n.maraiya\Downloads\SignalRApp\SignalRClient\SignalRClient\bin\Debug\Mi
 C:\Users\n.maraiya\Downloads\SignalRApp\SignalRClient\SignalRClient\bin\Debug\Newtonsoft.Json.pdb
 C:\Users\n.maraiya\Downloads\SignalRApp\SignalRClient\SignalRClient\bin\Debug\Newtonsoft.Json.xml
 C:\Users\n.maraiya\Downloads\SignalRApp\SignalRClient\SignalRClient\obj\Debug\SignalRClient.csprojResolveAssemblyReference.cache
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\SignalRClient.exe.config
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\obj\Debug\SignalRClient.exe
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\obj\Debug\SignalRClient.pdb
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\SignalRClient.exe
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\SignalRClient.pdb
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\Microsoft.AspNet.SignalR.Client.dll
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\Newtonsoft.Json.dll
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\Microsoft.AspNet.SignalR.Client.pdb
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\Microsoft.AspNet.SignalR.Client.xml
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\Newtonsoft.Json.pdb
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\bin\Debug\Newtonsoft.Json.xml
+D:\Auth\SignalR\SignalR\SignalRClient\SignalRClient\obj\Debug\SignalRClient.csprojResolveAssemblyReference.cache

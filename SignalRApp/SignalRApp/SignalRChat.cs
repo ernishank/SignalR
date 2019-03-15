@@ -86,13 +86,13 @@ namespace SignalRApp
         }
 
         #region Bind Data
-        public List<Student> FetchData()
+        public List<StockExchange> FetchData()
         {
             OleDbConnection conn = null;
-            List<Student> listStudent = new List<Student>();
-            string FilePath = @"C:\Users\n.maraiya\Documents\visual studio 2015\Projects\Excel\ExcelData.xlsx";
-            string ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + FilePath + ";Extended Properties=\"Excel 12.0;ReadOnly=False;HDR=Yes;\"";
-            string Command = "SELECT TOP 4 ID, Name FROM [Sheet1$] ORDER BY ID Desc";
+            List<StockExchange> listStudent = new List<StockExchange>();
+            string FilePath = @"D:\Auth\SignalR\SignalR\Excel\ExcelData.xlsx";
+            string ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + FilePath + ";Extended Properties=\"Excel 12.0;ReadOnly=true;HDR=Yes;\"";
+            string Command = "SELECT TOP 4 Id, CompanyName, Price FROM [Sheet1$] ORDER BY Id Desc";
             try
             {
                 using (conn = new OleDbConnection(ConnectionString))
@@ -108,10 +108,11 @@ namespace SignalRApp
                             DataTable idtable = id.Tables[0];
 
                             listStudent = (from s in idtable.AsEnumerable()
-                                           select new Student
+                                           select new StockExchange
                                            {
-                                               Id = Convert.ToInt32(s["ID"].ToString()),
-                                               Name = s["Name"].ToString()
+                                               Id = Convert.ToInt32(s["Id"].ToString()),
+                                               Name = s["CompanyName"].ToString(),
+                                               Price= Convert.ToDouble(s["Price"])
                                            }).ToList();
 
                             return listStudent;

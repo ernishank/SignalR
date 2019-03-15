@@ -4,3 +4,9 @@ c:\users\n.maraiya\documents\visual studio 2015\Projects\ExcelOperations\ExcelOp
 c:\users\n.maraiya\documents\visual studio 2015\Projects\ExcelOperations\ExcelOperations\bin\Debug\ExcelOperations.pdb
 c:\users\n.maraiya\documents\visual studio 2015\Projects\ExcelOperations\ExcelOperations\obj\Debug\ExcelOperations.exe
 c:\users\n.maraiya\documents\visual studio 2015\Projects\ExcelOperations\ExcelOperations\obj\Debug\ExcelOperations.pdb
+D:\Auth\SignalR\SignalR\ExcelOperations\ExcelOperations\bin\Debug\ExcelOperations.exe.config
+D:\Auth\SignalR\SignalR\ExcelOperations\ExcelOperations\obj\Debug\ExcelOperations.exe
+D:\Auth\SignalR\SignalR\ExcelOperations\ExcelOperations\obj\Debug\ExcelOperations.pdb
+D:\Auth\SignalR\SignalR\ExcelOperations\ExcelOperations\bin\Debug\ExcelOperations.exe
+D:\Auth\SignalR\SignalR\ExcelOperations\ExcelOperations\bin\Debug\ExcelOperations.pdb
+D:\Auth\SignalR\SignalR\ExcelOperations\ExcelOperations\obj\Debug\ExcelOperations.csprojResolveAssemblyReference.cache
